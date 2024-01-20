@@ -1,0 +1,42 @@
+<!-- File: index.html -->
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Check IP</title>
+</head>
+<body>
+    <label for="ipInput">Enter IP:</label>
+    <input type="text" id="ipInput" placeholder="Enter IP">
+    <button onclick="checkIp()">Check IP</button>
+
+    <div id="apiResult"></div>
+
+    <script>
+        // ส่วนที่ต้องแก้
+        async function checkIp() {
+            const ipInput = document.getElementById('ipInput').value;
+
+            try {
+                const response = await fetch(`http://192.168.1.116:3000/check-my-ip`, {
+                    method: 'POST', // ใช้เมธอด POST
+                    headers: {
+                        'Content-Type': 'application/json',
+                    },
+                    // ระบุ body ในกรณี POST
+                    body: JSON.stringify({ ip: ipInput }),
+                });
+
+                const result = await response.json();
+                const apiResult = document.getElementById('apiResult');
+                apiResult.innerHTML = `API Result: ${result.myIP}`;
+            } catch (error) {
+                console.error('API Call error:', error);
+                alert('An error occurred during the API call.');
+            }
+        }
+
+    </script>
+</body>
+</html>
